@@ -6,7 +6,7 @@
     <title>ML/DL Paper to Code - AI-Powered Automation</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}?v=2.1" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
@@ -259,6 +259,10 @@
                                 <i class="fas fa-download"></i>
                                 Download Code
                             </button>
+                            <button class="btn btn-tertiary" id="understandBtn">
+                                <i class="fas fa-question-circle"></i>
+                                Understand the Code
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -365,6 +369,59 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- Code Understanding Modal -->
+    <div class="modal" id="understandModal">
+        <div class="modal-content understand-modal">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-question-circle"></i>
+                    Understand the Code
+                </h3>
+                <button class="modal-close" id="understandModalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="understand-intro">
+                    <p>Ask questions about the generated code and get AI-powered explanations!</p>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message bot-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm here to help you understand the generated code. Ask me anything about how it works, what each part does, or any implementation details!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="questionInput" 
+                            class="chat-input" 
+                            placeholder="Ask a question about the code..."
+                            autocomplete="off"
+                        >
+                        <button id="sendQuestionBtn" class="send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="suggested-questions">
+                        <p class="suggested-label">Suggested questions:</p>
+                        <div class="question-chips">
+                            <button class="question-chip" data-question="What does this code do?">What does this code do?</button>
+                            <button class="question-chip" data-question="How does the model architecture work?">How does the model architecture work?</button>
+                            <button class="question-chip" data-question="Explain the training process">Explain the training process</button>
+                            <button class="question-chip" data-question="What are the key parameters and hyperparameters?">What are the key parameters?</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}?v=2.0"></script>
 </body>
 </html>

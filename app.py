@@ -438,5 +438,96 @@ def preview_code(task_id):
     
     return jsonify({'error': 'Code not found'}), 404
 
+@app.route('/understand/<task_id>', methods=['POST'])
+def understand_code(task_id):
+    """Answer questions about the generated code using LLM."""
+    if task_id not in processing_results or processing_results[task_id]['status'] != 'completed':
+        return jsonify({'error': 'Code not found'}), 404
+    
+    try:
+        data = request.get_json()
+        question = data.get('question', '').strip()
+        
+        if not question:
+            return jsonify({'error': 'Question is required'}), 400
+        
+        # Get the generated code
+        output_file = processing_results[task_id]['output_file']
+        file_path = os.path.join(OUTPUT_FOLDER, output_file)
+        
+        if not os.path.exists(file_path):
+            return jsonify({'error': 'Code file not found'}), 404
+        
+        with open(file_path, 'r', encoding='utf-8') as f:
+            code_content = f.read()
+        
+        # Get framework and algorithm info for context
+        framework = processing_results[task_id].get('framework', 'unknown')
+        algorithms = processing_results[task_id].get('algorithms', [])
+        algorithm_names = [alg.get('name', '') for alg in algorithms]
+        
+        # Initialize LLM client (use same config as the pipeline)
+        config_path = Path('config/default.yaml')
+        llm_client = None
+        if config_path.exists():
+            import yaml
+            with open(config_path, 'r') as f:
+                config_data = yaml.safe_load(f)
+            
+            extractor_config = config_data.get('extractor', {})
+            if extractor_config.get('use_llm', False):
+                try:
+                    provider_str = extractor_config.get('llm_provider', 'groq').lower()
+                    model = extractor_config.get('model', 'llama-3.3-70b-versatile')
+                    if provider_str == 'groq':
+                        llm_client = LLMClient(provider=LLMProvider.GROQ, model=model)
+                    elif provider_str == 'openrouter':
+                        llm_client = LLMClient(provider=LLMProvider.OPENROUTER, model=model)
+                    elif provider_str == 'openai':
+                        llm_client = LLMClient(provider=LLMProvider.OPENAI)
+                    elif provider_str == 'anthropic':
+                        llm_client = LLMClient(provider=LLMProvider.ANTHROPIC)
+                except Exception as e:
+                    print(f"Failed to initialize LLM client for understanding: {e}")
+        
+        if not llm_client:
+            return jsonify({'error': 'LLM client not available. Please configure API keys.'}), 503
+        
+        # Create context-aware prompt
+        context = f"""You are an expert code explainer helping a user understand generated machine learning code.
+
+Framework: {framework}
+Algorithms implemented: {', '.join(algorithm_names) if algorithm_names else 'Various ML algorithms'}
+
+Generated Code:
+```python
+{code_content[:8000]}  # Limit code to 8000 chars to avoid token limits
+```
+
+User Question: {question}
+
+Please provide a clear, helpful answer about the code. Focus on:
+1. Explaining the specific part of the code relevant to the question
+2. How the code works
+3. Any important implementation details
+4. Best practices or potential improvements if relevant
+
+Keep your answer concise but comprehensive."""
+        
+        # Generate answer using LLM
+        answer = llm_client.generate(
+            prompt=context,
+            system_prompt="You are a helpful code explainer. Provide clear, accurate explanations about machine learning code implementations."
+        )
+        
+        return jsonify({
+            'answer': answer,
+            'question': question
+        })
+        
+    except Exception as e:
+        print(f"Error in understand_code: {e}")
+        return jsonify({'error': f'Failed to process question: {str(e)}'}), 500
+
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5000, use_reloader=False)

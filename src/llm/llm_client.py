@@ -76,6 +76,8 @@ class LLMClient:
                 api_key = os.getenv("GROQ_API_KEY")
                 if not api_key:
                     raise ValueError("GROQ_API_KEY not found in environment variables")
+                # Log first 20 chars of API key for verification (for debugging)
+                logger.info(f"Initializing Groq client with API key: {api_key[:20]}...")
                 self.client = OpenAI(
                     api_key=api_key,
                     base_url="https://api.groq.com/openai/v1"

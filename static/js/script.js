@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedFile = null;
     let selectedFramework = 'pytorch';
     let generatedCode = '';
+    let currentSessionId = null;
 
     // Upload area interactions
     uploadArea.addEventListener('click', () => fileInput.click());
@@ -42,6 +43,43 @@ document.addEventListener('DOMContentLoaded', function() {
     modalClose.addEventListener('click', closeModal);
     codeModal.addEventListener('click', function(e) {
         if (e.target === codeModal) closeModal();
+    });
+
+    // Understand code modal interactions
+    const understandBtn = document.getElementById('understandBtn');
+    const understandModal = document.getElementById('understandModal');
+    const understandModalClose = document.getElementById('understandModalClose');
+    const questionInput = document.getElementById('questionInput');
+    const sendQuestionBtn = document.getElementById('sendQuestionBtn');
+    const chatMessages = document.getElementById('chatMessages');
+    const questionChips = document.querySelectorAll('.question-chip');
+
+    // Check if understand button exists
+    if (understandBtn) {
+        understandBtn.addEventListener('click', showUnderstandModal);
+    } else {
+        console.warn('Understand button not found in DOM');
+    }
+    understandModalClose.addEventListener('click', closeUnderstandModal);
+    understandModal.addEventListener('click', function(e) {
+        if (e.target === understandModal) closeUnderstandModal();
+    });
+    sendQuestionBtn.addEventListener('click', sendQuestion);
+    questionInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendQuestion();
+        }
+    });
+
+    // Suggested question chips
+    questionChips.forEach(chip => {
+        chip.addEventListener('click', function() {
+            const question = this.getAttribute('data-question');
+            questionInput.value = question;
+            questionInput.focus();
+            sendQuestion();
+        });
     });
 
     // Smooth scrolling for navigation links
@@ -170,6 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     fetch(`/results/${sessionId}`)
                     .then(response => response.json())
                     .then(results => {
+                        // Store session ID for understand feature
+                        currentSessionId = sessionId;
+                        results.session_id = sessionId; // Add session ID to results
                         showResults(results);
                     })
                     .catch(error => {
@@ -222,6 +263,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         generatedCode = results.code;
         
+        // Store session ID for understand feature
+        // Extract from the results or use the last polled session ID
+        // We'll need to store it when we get results
+        if (results.session_id) {
+            currentSessionId = results.session_id;
+        }
+        
         // Display results summary
         resultsSummary.innerHTML = `
             <div class="algorithm-item">
@@ -235,6 +283,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `).join('')}
         `;
+        
+        // Ensure understand button is visible
+        const understandBtnCheck = document.getElementById('understandBtn');
+        if (understandBtnCheck) {
+            understandBtnCheck.style.display = 'flex';
+            console.log('Understand button is visible');
+        } else {
+            console.error('Understand button not found!');
+        }
         
         // Scroll to results
         resultsSection.scrollIntoView({ behavior: 'smooth' });
@@ -368,4 +425,126 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start typing animation when page loads
     setTimeout(typeCode, 1000);
+
+    // Understand Code Functions
+    function showUnderstandModal() {
+        if (!currentSessionId) {
+            showNotification('No code available to understand', 'error');
+            return;
+        }
+        understandModal.style.display = 'flex';
+        questionInput.focus();
+    }
+
+    function closeUnderstandModal() {
+        understandModal.style.display = 'none';
+    }
+
+    function sendQuestion() {
+        const question = questionInput.value.trim();
+        if (!question) {
+            showNotification('Please enter a question', 'error');
+            return;
+        }
+
+        if (!currentSessionId) {
+            showNotification('No code available to understand', 'error');
+            return;
+        }
+
+        // Disable input and button
+        questionInput.disabled = true;
+        sendQuestionBtn.disabled = true;
+
+        // Add user message to chat
+        addMessageToChat(question, 'user');
+
+        // Clear input
+        questionInput.value = '';
+
+        // Add loading message
+        const loadingId = addMessageToChat('Thinking...', 'bot', true);
+
+        // Send question to backend
+        fetch(`/understand/${currentSessionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ question: question })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove loading message
+            const loadingMsg = document.getElementById(loadingId);
+            if (loadingMsg) {
+                loadingMsg.remove();
+            }
+
+            if (data.error) {
+                addMessageToChat(`Sorry, I encountered an error: ${data.error}`, 'bot');
+            } else {
+                addMessageToChat(data.answer, 'bot');
+            }
+
+            // Re-enable input and button
+            questionInput.disabled = false;
+            sendQuestionBtn.disabled = false;
+            questionInput.focus();
+        })
+        .catch(error => {
+            console.error('Error asking question:', error);
+            
+            // Remove loading message
+            const loadingMsg = document.getElementById(loadingId);
+            if (loadingMsg) {
+                loadingMsg.remove();
+            }
+
+            addMessageToChat('Sorry, I encountered an error while processing your question. Please try again.', 'bot');
+            
+            // Re-enable input and button
+            questionInput.disabled = false;
+            sendQuestionBtn.disabled = false;
+            questionInput.focus();
+        });
+    }
+
+    function addMessageToChat(message, type, isLoading = false) {
+        const messageId = 'msg-' + Date.now();
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${type}-message`;
+        messageDiv.id = messageId;
+
+        if (type === 'user') {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-content">
+                    <p>${escapeHtml(message)}</p>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <p>${isLoading ? '<span class="loading-dots">' + escapeHtml(message) + '</span>' : escapeHtml(message)}</p>
+                </div>
+            `;
+        }
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        return messageId;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 });
