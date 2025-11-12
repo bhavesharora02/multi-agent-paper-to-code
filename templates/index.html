@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML/DL Paper to Code - AI-Powered Automation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span>Paper2Code AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="#demo" class="nav-link">Try Now</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-magic"></i>
+                    <span>AI-Powered Code Generation</span>
+                </div>
+                <h1 class="hero-title">
+                    Transform Research Papers into
+                    <span class="gradient-text">Executable Code</span>
+                </h1>
+                <p class="hero-description">
+                    Upload any ML/DL research paper and watch our AI automatically extract algorithms 
+                    and generate production-ready Python code for PyTorch, TensorFlow, or scikit-learn.
+                </p>
+                <div class="hero-actions">
+                    <a href="#demo" class="btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Start Generating Code
+                    </a>
+                    <a href="#about" class="btn-secondary">
+                        <i class="fas fa-play"></i>
+                        See How It Works
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">16+</div>
+                        <div class="stat-label">Algorithms Detected</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">ML Frameworks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Automated</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="control red"></span>
+                            <span class="control yellow"></span>
+                            <span class="control green"></span>
+                        </div>
+                        <div class="window-title">generated_code.py</div>
+                        <div class="window-status">
+                            <i class="fas fa-circle"></i>
+                            <span>AI Generated</span>
+                        </div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line">
+                            <span class="line-number">1</span>
+                            <span class="code-text"><span class="keyword">import</span> <span class="module">torch</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">2</span>
+                            <span class="code-text"><span class="keyword">import</span> <span class="module">torch.nn</span> <span class="keyword">as</span> <span class="module">nn</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">3</span>
+                            <span class="code-text"></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">4</span>
+                            <span class="code-text"><span class="keyword">class</span> <span class="class-name">NeuralNetwork</span><span class="punctuation">(</span><span class="class-name">nn.Module</span><span class="punctuation">):</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">5</span>
+                            <span class="code-text">    <span class="keyword">def</span> <span class="function-name">__init__</span><span class="punctuation">(</span><span class="parameter">self</span><span class="punctuation">,</span> <span class="parameter">input_size</span><span class="punctuation">,</span> <span class="parameter">hidden_size</span><span class="punctuation">):</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">6</span>
+                            <span class="code-text">        <span class="keyword">super</span><span class="punctuation">()</span><span class="punctuation">.</span><span class="function-name">__init__</span><span class="punctuation">()</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">7</span>
+                            <span class="code-text">        <span class="parameter">self</span><span class="punctuation">.</span><span class="attribute">layers</span> <span class="operator">=</span> <span class="class-name">nn.Sequential</span><span class="punctuation">(</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">8</span>
+                            <span class="code-text">            <span class="class-name">nn.Linear</span><span class="punctuation">(</span><span class="parameter">input_size</span><span class="punctuation">,</span> <span class="parameter">hidden_size</span><span class="punctuation">),</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">9</span>
+                            <span class="code-text">            <span class="class-name">nn.ReLU</span><span class="punctuation">(),</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">10</span>
+                            <span class="code-text">            <span class="class-name">nn.Linear</span><span class="punctuation">(</span><span class="parameter">hidden_size</span><span class="punctuation">,</span> <span class="number">10</span><span class="punctuation">)</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">11</span>
+                            <span class="code-text">        <span class="punctuation">)</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">12</span>
+                            <span class="code-text"></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">13</span>
+                            <span class="code-text">    <span class="keyword">def</span> <span class="function-name">forward</span><span class="punctuation">(</span><span class="parameter">self</span><span class="punctuation">,</span> <span class="parameter">x</span><span class="punctuation">):</span></span>
+                        </div>
+                        <div class="code-line">
+                            <span class="line-number">14</span>
+                            <span class="code-text">        <span class="keyword">return</span> <span class="parameter">self</span><span class="punctuation">.</span><span class="attribute">layers</span><span class="punctuation">(</span><span class="parameter">x</span><span class="punctuation">)</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2>Upload & Generate Code</h2>
+                <p>Simply drop your PDF and let our AI do the magic</p>
+            </div>
+            
+            <div class="upload-container">
+                <div class="upload-card">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Drop your PDF here</h3>
+                        <p>or <span class="upload-link">browse files</span></p>
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                    </div>
+                    
+                    <div class="framework-selection">
+                        <h4>Choose Your Framework:</h4>
+                        <div class="framework-options">
+                            <label class="framework-option">
+                                <input type="radio" name="framework" value="pytorch" checked>
+                                <div class="framework-card pytorch">
+                                    <i class="fab fa-python"></i>
+                                    <span>PyTorch</span>
+                                </div>
+                            </label>
+                            <label class="framework-option">
+                                <input type="radio" name="framework" value="tensorflow">
+                                <div class="framework-card tensorflow">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>TensorFlow</span>
+                                </div>
+                            </label>
+                            <label class="framework-option">
+                                <input type="radio" name="framework" value="sklearn">
+                                <div class="framework-card sklearn">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Scikit-learn</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="process-btn" id="processBtn" disabled>
+                        <i class="fas fa-magic"></i>
+                        Generate Code
+                    </button>
+                </div>
+                
+                <!-- Progress Section -->
+                <div class="progress-section" id="progressSection" style="display: none;">
+                    <div class="progress-card">
+                        <h3>AI Processing Your Paper</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Starting...</p>
+                        <div class="progress-steps">
+                            <div class="step active" id="step1">
+                                <div class="step-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <span>Paper Analysis</span>
+                            </div>
+                            <div class="step" id="step2">
+                                <div class="step-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <span>Algorithm Interpretation</span>
+                            </div>
+                            <div class="step" id="step3">
+                                <div class="step-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <span>Code Generation</span>
+                            </div>
+                            <div class="step" id="step4">
+                                <div class="step-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span>Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-card">
+                        <div class="success-animation">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Code Generated Successfully!</h3>
+                        <div class="results-summary" id="resultsSummary">
+                            <!-- Results will be populated here -->
+                        </div>
+                        <div class="results-actions">
+                            <button class="btn btn-primary" id="previewBtn">
+                                <i class="fas fa-eye"></i>
+                                Preview Code
+                            </button>
+                            <button class="btn btn-secondary" id="downloadBtn">
+                                <i class="fas fa-download"></i>
+                                Download Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Powered by Advanced AI</h2>
+                    <p>
+                        Our system uses cutting-edge natural language processing and machine learning 
+                        to understand research papers and automatically generate production-ready code. 
+                        No manual coding required - just upload and get instant results.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>AI Algorithm Detection</h4>
+                                <p>Advanced NLP models identify ML/DL algorithms with high accuracy</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Multi-Framework Support</h4>
+                                <p>Generate code for PyTorch, TensorFlow, and scikit-learn</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Production Ready</h4>
+                                <p>Complete implementations with training loops and evaluation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="tech-showcase">
+                        <div class="tech-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <span>NLP</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF Processing</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Generation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span>Paper2Code AI</span>
+                </div>
+                <p>Transforming research papers into executable code with AI</p>
+                <div class="footer-info">
+                    <p><strong>Author:</strong> Bhavesh Arora (M24DE3022)</p>
+                    <p><strong>Project:</strong> Major Technical Project 1 (MTP1)</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Code Preview Modal -->
+    <div class="modal" id="codeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generated Code Preview</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pre><code id="codePreview"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
