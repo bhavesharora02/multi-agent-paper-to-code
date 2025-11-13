@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Agent Code Generation - AI-Powered Development</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                </div>
+                <span>Multi-Agent CodeGen</span>
+            </div>
+            <div class="nav-links">
+                <a href="#demo" class="nav-link">Try Now</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-robot"></i>
+                    <span>AI-Powered Multi-Agent System</span>
+                </div>
+                <h1 class="hero-title">
+                    Collaborative Code Generation
+                    <span class="gradient-text">with AI Agents</span>
+                </h1>
+                <p class="hero-description">
+                    Watch AI agents collaborate to generate, test, debug, and optimize code automatically.
+                    Our multi-agent system mimics human development workflows for higher correctness.
+                </p>
+                <a href="#demo" class="cta-button">
+                    <span>Start Generating Code</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Generate Code with AI Agents</h2>
+                <p>Enter a code specification and watch our agents work together</p>
+            </div>
+
+            <div class="demo-container">
+                <div class="input-panel">
+                    <div class="input-group">
+                        <label for="specification">
+                            <i class="fas fa-file-code"></i>
+                            Code Specification
+                        </label>
+                        <textarea 
+                            id="specification" 
+                            placeholder="Example: Implement a function to check if a string is a palindrome. The function should handle empty strings and be case-insensitive."
+                            rows="6"
+                        ></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="maxIterations">
+                            <i class="fas fa-sync-alt"></i>
+                            Max Iterations
+                        </label>
+                        <input 
+                            type="number" 
+                            id="maxIterations" 
+                            value="10" 
+                            min="1" 
+                            max="20"
+                        >
+                        <small>Maximum number of debug cycles</small>
+                    </div>
+
+                    <button id="processBtn" class="process-button">
+                        <i class="fas fa-play"></i>
+                        <span>Generate Code</span>
+                    </button>
+                </div>
+
+                <!-- Progress Section -->
+                <div id="progressSection" class="progress-section" style="display: none;">
+                    <div class="progress-header">
+                        <h3>Processing with Multi-Agent System</h3>
+                        <div class="agent-status">
+                            <span id="currentAgent">Initializing...</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progressText">0%</span>
+                            <span id="progressMessage">Initializing...</span>
+                        </div>
+                    </div>
+                    <div class="iteration-info">
+                        <div class="info-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Iteration: <strong id="iterationCount">0</strong></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-robot"></i>
+                            <span>Agent: <strong id="agentName">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="results-section" style="display: none;">
+                    <div class="results-header">
+                        <h3>Generated Code</h3>
+                        <div class="results-actions">
+                            <button id="previewBtn" class="action-btn">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button id="downloadBtn" class="action-btn">
+                                <i class="fas fa-download"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                    <div class="results-summary" id="resultsSummary">
+                        <div class="rating-display" id="ratingDisplay">
+                            <div class="rating-circle">
+                                <span id="ratingValue">0</span>
+                                <span class="rating-label">/10</span>
+                            </div>
+                            <div class="rating-info">
+                                <h4>Code Quality Rating</h4>
+                                <p id="ratingDetails">Analyzing code quality...</p>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Iterations: <strong id="finalIterations">0</strong></span>
+                        </div>
+                    </div>
+                    <div class="rating-feedback" id="ratingFeedback" style="display: none;">
+                        <h4>Detailed Feedback</h4>
+                        <p id="feedbackText"></p>
+                    </div>
+                    <div class="tabs-container">
+                        <button class="tab-btn active" data-tab="code">Code</button>
+                        <button class="tab-btn" data-tab="understand">Understand the Code</button>
+                    </div>
+                    <div class="tab-content active" id="codeTab">
+                        <div class="code-preview" id="codePreview">
+                            <pre><code id="codeContent"></code></pre>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="understandTab" style="display: none;">
+                        <div class="understand-container">
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="message bot-message">
+                                    <p>Ask me anything about the generated code! I can explain how it works, what each part does, or help you understand specific functions.</p>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <input type="text" id="questionInput" placeholder="Ask a question about the code..." class="chat-input">
+                                <button id="sendQuestionBtn" class="send-btn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            <div class="suggested-questions">
+                                <p>Suggested questions:</p>
+                                <div class="question-chips">
+                                    <span class="question-chip" data-question="How does this code work?">How does this code work?</span>
+                                    <span class="question-chip" data-question="What does each function do?">What does each function do?</span>
+                                    <span class="question-chip" data-question="Can you explain the algorithm?">Can you explain the algorithm?</span>
+                                    <span class="question-chip" data-question="What are the edge cases handled?">What are the edge cases?</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Our multi-agent system uses specialized AI agents working together</p>
+            </div>
+            <div class="agents-grid">
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Coder Agent</h3>
+                    <p>Generates Python code from specifications using advanced LLMs</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3>Tester Agent</h3>
+                    <p>Generates comprehensive unit tests and executes them in a sandbox (runs in background)</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3>Debugger Agent</h3>
+                    <p>Analyzes test failures, interprets errors, and suggests targeted fixes (runs in background)</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Rater Agent</h3>
+                    <p>Analyzes code quality and provides a rating from 0-10 based on correctness, completeness, and best practices</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Explainer Agent</h3>
+                    <p>Answers questions about the generated code, explains functionality, and helps you understand how it works</p>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Optimizer Agent</h3>
+                    <p>Reviews code for efficiency and adds comprehensive documentation</p>
+                </div>
+            </div>
+            <div class="workflow-diagram">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Specification</h4>
+                        <p>Enter code requirements</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Code Generation</h4>
+                        <p>Coder Agent generates code</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Test & Debug</h4>
+                        <p>Tester runs tests, Debugger fixes errors</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Rating</h4>
+                        <p>Rater Agent analyzes quality</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Optimize</h4>
+                        <p>Optimizer improves code</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generated Code</h3>
+                <button id="modalClose" class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pre><code id="modalCodeContent"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+

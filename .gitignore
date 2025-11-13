@@ -26,6 +26,8 @@ uploads/*
 !uploads/.gitkeep
 outputs/*
 !outputs/.gitkeep
+multi_agent_codegen/outputs/*
+multi_agent_codegen/code_repos/*
 
 # API Keys and Secrets (IMPORTANT: Never commit these!)
 *.key
@@ -63,4 +65,3 @@ __pycache__/
 dist/
 build/
 *.egg-info/
-

@@ -1,0 +1,62 @@
+# Configuration for Multi-Agent Code Generation System
+
+# LLM Configuration
+llm:
+  provider: "groq"  # Options: openai, anthropic, openrouter, groq
+  model: "llama-3.3-70b-versatile"  # Model name
+  temperature: 0.7
+  max_tokens: 4096
+  # Note: Set GROQ_API_KEY environment variable
+  # For Windows: $env:GROQ_API_KEY="your_key_here"
+  # For Linux/Mac: export GROQ_API_KEY="your_key_here"
+
+# Workflow Configuration
+workflow:
+  max_iterations: 10  # Maximum number of debug cycles
+  max_improvement_attempts: 3  # Maximum attempts to improve code if rating < 7
+  enable_optimizer: true  # Enable Optimizer/Explainer agent
+  enable_git: true  # Enable Git version tracking
+  min_rating_threshold: 7.0  # Minimum acceptable rating (will try to improve if below)
+
+# Sandbox Configuration
+sandbox:
+  type: "local"  # Options: local, docker
+  timeout: 30  # Execution timeout in seconds
+  memory_limit: "512MB"  # Memory limit (for Docker)
+  cpu_limit: 1  # CPU limit (for Docker)
+
+# Agent Configuration
+agents:
+  coder:
+    temperature: 0.7
+    max_tokens: 2048
+  tester:
+    temperature: 0.3  # Lower temperature for more consistent tests
+    max_tokens: 2048
+    generate_edge_cases: true
+  debugger:
+    temperature: 0.5
+    max_tokens: 2048
+  rater:
+    temperature: 0.3  # Lower temperature for consistent ratings
+    max_tokens: 1024
+  optimizer:
+    temperature: 0.3
+    max_tokens: 1024
+  explainer:
+    temperature: 0.7  # More creative for explanations
+    max_tokens: 2048
+
+# Git Configuration
+git:
+  repo_path: "./code_repos"  # Base path for git repositories
+  auto_commit: true  # Automatically commit after each iteration
+
+# Evaluation Configuration
+evaluation:
+  benchmarks:
+    - "humaneval"
+    - "leetcode_easy"
+  pass_at_k: [1, 5, 10]  # Values of k for pass@k metric
+  num_samples: 1  # Number of samples per problem
+
